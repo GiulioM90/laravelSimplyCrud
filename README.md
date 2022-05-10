@@ -90,4 +90,68 @@ DB_PASSWORD=root </p>
 <p>Route::get('/', [PublicController::class, "welcome"] )->name("welcome");</p>
 <p>importare la classe </p>
 <p> andare nella vista welcome cancellare cosa c''è e inserire <x-layout></x-layout></p>
+<p> INSTALLAZIONE FORTIFY PER AUTENTICAZIONE </p>
+<p>composer require laravel/fortify</p>
+<p> php artisan vendor:publish --provider="Laravel\Fortify\FortifyServiceProvider"</p>
+<p>php artisan migrate</p>
+<p>in config\app.php  all'interno dei providers inserire App\Providers\FortifyServiceProvider::class, </p>
+<p> in App\Providers\FortifyServiceProvider</p>
+<p> inserire le viste richieste per il login e il register nella funzione di boot()</p>
+<p> Fortify::loginView(function (){return view('auth.login');});</p>
+<p> importare la classe FORTIFY se necessario </p>
+<p> Fortify::registerView(function (){
+            return view('auth.register');
+        });</p>
+<p> Creare folder nelle views auth e le viste login e register con il layout importato dentro</p>
+<p> Modificare la navbar con le rotte che servono </p>
+<p> <a class="navbar-brand" href="{{route('welcome')}}">Home</a></p>
+<p>        @guest
+        <li class="nav-item">
+          <a class="nav-link" href="{{route('register')}}">Registrati</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{route('login')}}">Login</a>
+        </li>
+        @endguest</p>
+<p> inserire nelle viste di register e login il display di errori</p>
+<p> @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif</p>
+<p> inserire form nel register e nel login </p>
+<p> gli attributi sono name="name" name="email" name="password"  name="password_confirmation"</p>
+<p> settare il form </p>
+<p>  PER IL REGISTER:   <form method="POST" action="{{route('register')}}">
+        @csrf</p>
+<p>  PER IL LOGIN  <form method="POST" action="{{route('login')}}">
+        @csrf</p>
+<p> INSEIRE NELLA NAV UTENTE IN SESSIONE E TASTO LOGOUT CON JAVASCRIPT </p>
+<p> Ricorda di inserire il tutto tra @else e la fine del @endguest per non far scattare errori </p>
+<p> 
+
+  @else
+        <li class="nav-item">
+          <a class="nav-link" href="">Benvenuto {{Auth::user()->name}}</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="{{ route('logout') }}"onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+          @csrf
+        </form>
+        </li>
+
+        @endguest
+</p>
+<p>IN RouteServiceProvider </p>
+<p>    public const HOME = '/';</p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
 <p></p>
