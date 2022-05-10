@@ -63,7 +63,31 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
-
+#lista azioni
 <p>npm install</p>
 <p>npm install bootstrap</p>
 <p>npm install @popperjs/core</p>
+<p>creata folder components con dentro layout.blade con inizializzazione doc html {{$slot}} e link per css e script    {{asset('css/app.css')}}    </p>
+<p>in app CSS  @import '~bootstrap/dist/css/bootstrap'; </p>
+<p>in app JS require('bootstrap');</p>
+<p>lanciare o npm run dev o npm run watch per il building degli assets</p>
+<p>creata view nav e navbar </p>
+<p>inserito nel layout il componente </p>
+<p>Per la creazione del database  </p>
+<p>winpty mysql -u root -p  </p>
+<p>create database simplycrud;  </p>
+<p>nel file .env impostare il database  </p>
+<p>DB_DATABASE=simplycrud
+DB_USERNAME=root
+DB_PASSWORD=root </p>
+<p> Creare controller  </p>
+<p>php artisan make:controller PublicController</p>
+<p> nel controller   public function welcome(){
+        return view("welcome");
+    }
+}</p>
+<p> nel web.php settare </p>
+<p>Route::get('/', [PublicController::class, "welcome"] )->name("welcome");</p>
+<p>importare la classe </p>
+<p> andare nella vista welcome cancellare cosa c''è e inserire <x-layout></x-layout></p>
+<p></p>
