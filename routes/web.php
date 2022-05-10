@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BreweryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PublicController;
 
@@ -15,3 +16,8 @@ use App\Http\Controllers\PublicController;
 */
 
 Route::get('/', [PublicController::class, "welcome"] )->name("welcome");
+// ROTTE PER BIRRERIE
+
+Route::get("/brewery/index" , [BreweryController::class, "index"])->name("breweryIndex");
+Route::get("/brewery/create" , [BreweryController::class, "create"])->name("breweryCreate");
+Route::post("/brewery/store", [BreweryController::class, "store"])->name("breweryStore");

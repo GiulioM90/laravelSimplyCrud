@@ -14,7 +14,9 @@ class BreweryController extends Controller
      */
     public function index()
     {
-        //
+        // $breweries = Brewery::all();
+        $breweries = Brewery::orderBy("created_at", "DESC")->paginate(2);
+        return view("brewery.index", compact("breweries"));
     }
 
     /**
@@ -24,7 +26,7 @@ class BreweryController extends Controller
      */
     public function create()
     {
-        //
+        return view("brewery.create");
     }
 
     /**
@@ -35,7 +37,17 @@ class BreweryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request -> all());
+
+        Brewery::create([
+            'name' => $request->name,
+            'address' => $request->address,
+            'description' => $request->description,
+            'owner' => $request->owner,
+            'site' => $request->site,
+            'img' => $request->file('img')->store("public/img"),
+        ]);
+        return redirect(route("breweryIndex"));
     }
 
     /**

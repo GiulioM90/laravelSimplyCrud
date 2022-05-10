@@ -179,6 +179,144 @@ DB_PASSWORD=root </p>
 </p>
 <p> lanciare migrazione</p>
 <p> php artisan migrate</p>
+<p> NEl controller brewery </p>
+<p>
+ public function create()
+    {
+        return view("brewery.create");
+    }
+</p>
+<p> creare nelle viste la fold brewery e la vista create.blade.php</p>
+<p>nella vista inserire x-layout </p>
+<p>inserire un nuovo form </p>
+<p>
+ <form method="POST" action="{{route('breweryStore')}}"  enctype="multipart/form-data">
+        @csrf
+        <div class="mb-3">
+            <label  class="form-label">Proprietario </label>
+            <input type="text" class="form-control" name="owner">
+        </div>
+        <div class="mb-3">
+            <label  class="form-label">Nome del tuo locale </label>
+            <input type="text" class="form-control" name="name">
+        </div>
+        <div class="mb-3">
+            <label  class="form-label">Indirizzo </label>
+            <input type="text" class="form-control" name="address">
+        </div>
+        <div class="mb-3">
+            <label  class="form-label">Descrizione </label>
+            <input type="text" class="form-control" name="description">
+        </div>
+        <div class="mb-3">
+            <label  class="form-label">Sito Web </label>
+            <input type="text" class="form-control" name="site">
+        </div>
+        <div class="mb-3">
+            <label  class="form-label">Immagine </label>
+            <input type="file" class="form-control" name="img">
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+</p>
+<p> Settare le rotte per il form di creazione </p>
+<p>Route::get("/brewery/create" , [BreweryController::class, "create"])->name("breweryCreate");</p>
+<p>Route::post("/brewery/store", [BreweryController::class, "store"])->name("breweryStore");</p>
+<p> nella nav nella vista autorizzata </p>
+<p> <li class="nav-item">
+          <a class="nav-link" href="{{route('breweryCreate')}}">Inserisci birreria</a>
+        </li>
+        
+</p>
+<p> nella funzione store del  BreweryController inserire un dd per testare il funzionamento</p>
+<p> 
+  public function store(Request $request)
+    {
+        dd($request -> all());
+    }
+</p>
+<p> se funziona usare il mass assignment per creare istanze </p>
+<p>
+  public function store(Request $request)
+    {
+        // dd($request -> all());
+
+        Brewery::create([
+            'name' => $request->name,
+            'address' => $request->address,
+            'description' => $request->description,
+            'owner' => $request->owner,
+            'site' => $request->site,
+            'img' => $request->file('img')->store("public/img"),
+        ]);
+    return redirect(route("breweryIndex"));
+    }
+</p>
+<p>php artisan storage:link    per collegare le immagini presenti nel public nella cartella storage </p>
+<p>Settare ora funzione index nel modello brewery</p>
+<p>
+   public function index()
+    {
+        return view("brewery.index");
+    }
+</p>
+<p>creare vista index.blade.php  nella folder delle viste delle brewery e inserire l'x-layout dentro </p>
+<p>creare la rotta per l'index delle breweries</p>
+<p>Route::get("/brewery/index" , [BreweryController::class, "index"])->name("breweryIndex");</p>
+<p> nella navbar fuori dal guest e auth </p>
+<p>
+  <li class="nav-item">
+          <a class="nav-link" href="{{route('breweryIndex')}}">Birrerie</a>
+        </li>
+</p>
+<p>
+    nella funzione index della brewery 
+</p>
+<p>
+public function index()
+    {
+        // $breweries = Brewery::all();
+        $breweries = Brewery::orderBy("created_at", "DESC")->paginate(2);
+        return view("brewery.index", compact("breweries"));
+    }
+
+</p>
+<p> Nella vista dell'index </p>
+<p>
+   @foreach ($breweries as $brewery)
+                 <div class="col-12">
+                 <div class="card" style="width: 18rem;">
+                    <img src="{{Storage::url($brewery->img)}}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{$brewery->name}}</h5>
+                        <h5 class="card-title">Proprietario: {{$brewery->owner}}</h5>
+                        <p class="card-title">Sito: {{$brewery->site}}</p>
+                        <p class="card-title">Indirizzo: {{$brewery->address}}</p>
+                        <p class="card-text">{{$brewery->description}}</p>
+                        <a href="#" class="btn btn-primary">Dettaglio</a>
+                    </div>
+                    </div>
+                 </div>
+                @endforeach
+
+ {{$breweries->links()}}   questa è la paginazione di laravel 
+
+
+</p>
+<p> con la paginazione potrebbe visualizzarsi male l'icona della freccia perché di default laravel usa TailwindCSS ma ora noi in questo progetto stiamo usando bootstrap.
+Quindi in AppServiceProvider.php nella funzione di boot() 
+ public function boot()
+    {
+        Paginator::useBootstrap();
+    }
+    
+    
+    
+    di questa classe per l'import  use Illuminate\Pagination\Paginator;
+    
+</p>
 <p></p>
 <p></p>
 <p></p>
