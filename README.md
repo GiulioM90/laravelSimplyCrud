@@ -149,6 +149,36 @@ DB_PASSWORD=root </p>
 </p>
 <p>IN RouteServiceProvider </p>
 <p>    public const HOME = '/';</p>
+<p> Creazione modello brewery </p>
+<p>php artisan make:model Brewery -mcr</p>
+<p> fa migrazione, controller e nel controller crea le funzione necessarie per il crud </p>
+<p>SETTARE IL DATABASE</p>
+<p> 
+
+            $table->id();
+            $table->string("name");
+            $table->string("address");
+            $table->text("description");
+            $table->string("owner");
+            $table->string("img");
+            $table->string("site")->nullable();
+            $table->timestamps();
+
+
+</p>
+<p> Ora settare il modello </p>
+<p>
+    protected $fillable = [
+        'name',
+        'address',
+        'description',
+        'owner',
+        'img',
+        'site',
+    ];
+</p>
+<p> lanciare migrazione</p>
+<p> php artisan migrate</p>
 <p></p>
 <p></p>
 <p></p>
