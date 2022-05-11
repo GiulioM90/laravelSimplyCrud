@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Beer;
 use App\Models\Brewery;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BreweryController extends Controller
 {
@@ -12,6 +14,10 @@ class BreweryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct(){
+        $this->middleware('auth')->except('index');
+    } 
     public function index()
     {
         // $breweries = Brewery::all();
@@ -25,8 +31,9 @@ class BreweryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        return view("brewery.create");
+    {   
+        $beers = Beer::all();
+        return view("brewery.create", compact("beers"));
     }
 
     /**
@@ -38,8 +45,8 @@ class BreweryController extends Controller
     public function store(Request $request)
     {
         // dd($request -> all());
-
-        Brewery::create([
+        // Brewery::create([
+            $brewery = Auth::user()->breweries()->create([
             'name' => $request->name,
             'address' => $request->address,
             'description' => $request->description,
@@ -47,6 +54,7 @@ class BreweryController extends Controller
             'site' => $request->site,
             'img' => $request->file('img')->store("public/img"),
         ]);
+        $brewery->beers()->attach($request->beers);
         return redirect(route("breweryIndex"));
     }
 

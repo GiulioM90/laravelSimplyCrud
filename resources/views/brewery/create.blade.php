@@ -22,6 +22,15 @@
             <input type="text" class="form-control" name="description">
         </div>
         <div class="mb-3">
+            <select name="beers[]" multiple>
+                @foreach ($beers as $beer)
+                    <option value="{{$beer->id}}">
+                        {{$beer->name}}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        <div class="mb-3">
             <label  class="form-label">Sito Web </label>
             <input type="text" class="form-control" name="site">
         </div>

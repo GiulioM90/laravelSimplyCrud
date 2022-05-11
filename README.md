@@ -326,7 +326,181 @@ Quindi in AppServiceProvider.php nella funzione di boot()
     }</p>
 <p>creare la vista blade show.blade.php e inserire l'x-layout</p>
 <p> rifare una card dentro con i valori e proprietà degli oggetti </p>
-<p></p>
-<p></p>
+<p> Creare relazione tra birrerie e utenti che registrano </p>
+<p> php artisan make:migration add_user_id_to_breweries</p>
+<p> sostituire l'owner per associarlo all'utente registrato in sessione</p>
+<p> NELLA MIGRAZIONE APPENA CREATA
+   public function up()
+    {
+        Schema::table('breweries', function (Blueprint $table) {
+            $table->dropColumn('owner');
+            $table->unsignedBigInteger('user_id')->after('description')->nullable();
+            //vincolo di integrità referenziale (la chiave esterna)
+            $table->foreign('user_id')->references('id')->on('users');
+        });
+    }
+
+
+</p>
+<p>
+ public function down()
+    {
+        Schema::table('breweries', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+            $table->dropColumn('user_id');
+            $table->string('owner')->after('description')->default('no_name');
+        });
+    }
+
+
+</p>
+<p> NEL MODELLO USER SETTARE RELAZIONI </p>
+<p>     public function breweries(){
+        return $this->hasMany(Brewery::class);
+    }</p>
+<p> RICORDA DI IMPORTARE LA CLASSE BREWERY</p>
+<p>SETTARE IL MODELLO BREWERY</p>
+<p>
+
+   public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+</p>
+<p> Ora modificare la funzione di store per associare questi collegamenti </p>
+<p>
+   $brewery = Auth::user()->breweries()->create([
+            'name' => $request->name,
+            'address' => $request->address,
+            'description' => $request->description,
+            'owner' => $request->owner,
+            'site' => $request->site,
+            'img' => $request->file('img')->store("public/img"),
+        ]);
+
+
+</p>
+<p> Ora creare il middleware per proteggere tutto il funzionamento </p>
+<p>nel brewery controller </p>
+<p>
+  public function __construct(){
+        $this->middleware('auth')->except('index');
+    } 
+
+</p>
+<p> ora settarci la manytomany</p>
+<p>e quindi creare le birre</p>
+<p>php artisan make:model Beer -m</p>
+<p>inserite deirettamente tramite seeder </p>
+<p>Nel modello beer </p>
+<p>
+
+
+    protected $fillable = ['name'];
+    
+    public function breweries(){
+        return $this->belongsToMany(Brewery::class);
+    }
+</p>
+<p> 
+NEL MODELLO BREWERY
+</p>
+<p>
+Nella migrazione 
+
+   public function up()
+    {
+        Schema::create('beers', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
+        });
+    }
+</p>
+<p>
+    public function beers(){
+        return $this->belongsToMany(Beer::class);
+    }
+
+</p>
+<p> RICORDA DI IMPORTARE LE CLASSI </p>
+<p> NEL SEEDER </p>
+<p>
+    public function run()
+    {
+        $beers = ['arrugant', 'Peroni' , 'Nastro azzurro', 'dreher','Menabrea','Heiniken','Guinness'];
+        foreach($beers as $beer){
+            DB::table('beers')->insert([
+                'name'=> $beer,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]);
+        }
+    }
+
+
+</p>
+<p> IMPORTA SEMPRE LE CLASSI </p>
+<p> FARE migrazione e popolazione seeder </p>
+<p>php artisan migrate:rollback</p>
+<p> php artisan migrate --seed</p>
+<p> Verificare in mysql</p>
+<p> ORA SETTARE LA TABELLA PIVOT TRA DUE RELAZIONI </p>
+<p>NB: devono essere nome due tabelle al singolare e in ordine alfabetico </p>
+<p>php artisan make:migration create_beer_brewery_table</p>
+<p> nella migrazione </p>
+<p>
+    public function up()
+    {
+        Schema::create('beer_brewery', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('beer_id');
+            $table->foreign('beer_id')->references('id')->on('beers');
+            $table->unsignedBigInteger('brewery_id');
+            $table->foreign('brewery_id')->references('id')->on('breweries');
+            $table->timestamps();
+        });
+    }
+</p>
+<p> lanciare la migrazione </p>
+<p>php artisan migrate</p>
+<p> AGGANCIIO DELLE BIRRE AL MODELLO </p>
+<p> nella funzione creazione nel BREWERYCONTROLLER </p>
+<p>   public function create()
+    {   
+        $beers = Beer::all();
+        return view("brewery.create", compact("beers"));
+    }
+
+</p>
+<p> inserire menù a tendina con le birre </p>
+<p> nella vista create.blade.php</p>
+<p>
+     <div class="mb-3">
+            <select name="beers[]" multiple>
+                @foreach ($beers as $beer)
+                    <option value="{{$beer->id}}">
+                        {{$beer->name}}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+</p>
+<p>mettiamo l'id perché nella option  passiamo l'id che poi andiamo a relazionare con l'attach ad agganciare questi modelli n-n</p>
+<p> NElla funzione store del brewerycontroller </p>
+<p>    $brewery->beers()->attach($request->beers);</p>
+<p> Mostrare birrerie inserite nella birrerie nella vista show.blade </p>
+<p>
+   <ul>
+                            @foreach ($brewery->beers as $beer)
+                                <li>
+                                    {{$beer->name}}
+                                </li>
+                            @endforeach
+                        </ul>
+
+
+</p>
 <p></p>
 <p></p>

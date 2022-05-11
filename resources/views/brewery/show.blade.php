@@ -15,6 +15,13 @@
                         <p class="card-title">Sito: {{$brewery->site}}</p>
                         <p class="card-title">Indirizzo: {{$brewery->address}}</p>
                         <p class="card-text">{{$brewery->description}}</p>
+                        <ul>
+                            @foreach ($brewery->beers as $beer)
+                                <li>
+                                    {{$beer->name}}
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
                     </div>
                  </div>
