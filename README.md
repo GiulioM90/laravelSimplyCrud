@@ -295,7 +295,7 @@ public function index()
                         <p class="card-title">Sito: {{$brewery->site}}</p>
                         <p class="card-title">Indirizzo: {{$brewery->address}}</p>
                         <p class="card-text">{{$brewery->description}}</p>
-                        <a href="#" class="btn btn-primary">Dettaglio</a>
+                        <a href="href="{{route('breweryShow', compact('brewery'))}}"" class="btn btn-primary">Dettaglio</a>
                     </div>
                     </div>
                  </div>
@@ -317,8 +317,15 @@ Quindi in AppServiceProvider.php nella funzione di boot()
     di questa classe per l'import  use Illuminate\Pagination\Paginator;
     
 </p>
-<p></p>
-<p></p>
+<p> creare rotta parametrica per il tasto detail </p>
+<p>Route::get("/brewery/show/{brewery}", [BreweryController::class,"show"])->name("breweryShow");</p>
+<p> Nel brewery controller </p>
+<p> public function show(Brewery $brewery)
+    {
+        return view("brewery.show",compact("brewery"));
+    }</p>
+<p>creare la vista blade show.blade.php e inserire l'x-layout</p>
+<p> rifare una card dentro con i valori e proprietà degli oggetti </p>
 <p></p>
 <p></p>
 <p></p>

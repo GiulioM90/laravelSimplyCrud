@@ -21,3 +21,4 @@ Route::get('/', [PublicController::class, "welcome"] )->name("welcome");
 Route::get("/brewery/index" , [BreweryController::class, "index"])->name("breweryIndex");
 Route::get("/brewery/create" , [BreweryController::class, "create"])->name("breweryCreate");
 Route::post("/brewery/store", [BreweryController::class, "store"])->name("breweryStore");
+Route::get("/brewery/show/{brewery}", [BreweryController::class,"show"])->name("breweryShow");

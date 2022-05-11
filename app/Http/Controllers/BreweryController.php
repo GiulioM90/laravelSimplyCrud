@@ -58,7 +58,7 @@ class BreweryController extends Controller
      */
     public function show(Brewery $brewery)
     {
-        //
+        return view("brewery.show",compact("brewery"));
     }
 
     /**
