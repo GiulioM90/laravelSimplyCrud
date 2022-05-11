@@ -50,7 +50,7 @@ class BreweryController extends Controller
             'name' => $request->name,
             'address' => $request->address,
             'description' => $request->description,
-            'owner' => $request->owner,
+            'user_id' =>Auth::user()->id,
             'site' => $request->site,
             'img' => $request->file('img')->store("public/img"),
         ]);
@@ -100,6 +100,9 @@ class BreweryController extends Controller
      */
     public function destroy(Brewery $brewery)
     {
-        //
+        $brewery->beers()->detach();
+        $brewery->user()->disassociate();
+        $brewery->delete();
+        return redirect(route("breweryIndex"));
     }
 }

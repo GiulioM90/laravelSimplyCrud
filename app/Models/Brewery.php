@@ -15,7 +15,7 @@ class Brewery extends Model
         'name',
         'address',
         'description',
-        'owner',
+        'user_id',
         'img',
         'site',
     ];

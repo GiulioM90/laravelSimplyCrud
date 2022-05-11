@@ -22,3 +22,4 @@ Route::get("/brewery/index" , [BreweryController::class, "index"])->name("brewer
 Route::get("/brewery/create" , [BreweryController::class, "create"])->name("breweryCreate");
 Route::post("/brewery/store", [BreweryController::class, "store"])->name("breweryStore");
 Route::get("/brewery/show/{brewery}", [BreweryController::class,"show"])->name("breweryShow");
+Route::delete("/brewery/destroy/{brewery}",[BreweryController::class,"destroy"])->name("breweryDestroy");

@@ -22,6 +22,17 @@
                                 </li>
                             @endforeach
                         </ul>
+                        @auth
+                             @if (Auth::id() === $brewery->user->id)
+                                <form method="POST" action="{{route('breweryDestroy', compact('brewery'))}}">
+                                    @csrf
+                                    @method('DELETE')
+                                <button type="submit" class="btn btn-danger">
+                                    Delete
+                                </button>
+                                </form>
+                                @endif
+                                @endauth
                     </div>
                     </div>
                  </div>

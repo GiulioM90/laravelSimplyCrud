@@ -502,5 +502,40 @@ Nella migrazione
 
 
 </p>
+<p>aggiungere la funzione destroy nel brewery controller </p>
+<p> public function destroy(Brewery $brewery)
+    {
+        $brewery->beers()->detach();
+        $brewery->user()->disassociate();
+        $brewery->delete();
+        return redirect(route("breweryIndex"));
+    }</p>
+
+
+<p>
+All'interno della vista show.blade.php </p>
+<p>
+  <form method="POST" action="{{route('breweryDestroy', compact('brewery'))}}">
+                            @csrf
+                            @method('delete')
+                        <button type="submit" class="btn btn-danger">
+                            Delete
+                        </button>
+                        </form>
+
+
+</p>
+<p> CREARE LA ROTTA </p>
+<p>
+Route::delete('/brewery/destroy/{brewery}',[BreweryController::class,'destroy'])->name("breweryDestroy");
+
+
+</p>
+<p> cancellare nella funzione store del brewery controller             'owner' => $request->owner,</p>
+<p> sostituirlo con    'user_id' =>Auth::user()->id,</p>
+<p>Nel modello Brewery sostituire il fillable owner con 'user_id'</p>
+
+<p></p>
+<p></p>
 <p></p>
 <p></p>
