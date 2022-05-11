@@ -26,15 +26,15 @@
                             </div>
                             <div class="mb-3">
                                 <label  class="form-label">Nome del tuo locale </label>
-                                <input type="text" class="form-control" name="name" value="{{old('name')}}">
+                                <input type="text" class="form-control" name="name" value="{{$brewery->name}}">
                             </div>
                             <div class="mb-3">
                                 <label  class="form-label">Indirizzo </label>
-                                <input type="text" class="form-control" name="address" value="{{old('address')}}"> 
+                                <input type="text" class="form-control" name="address" value="{{$brewery->address}}"> 
                             </div>
                             <div class="mb-3">
                                 <label  class="form-label">Descrizione </label>
-                                <input type="text" class="form-control" name="description" value="{{old('description')}}">
+                                <input type="text" class="form-control" name="description" value="{{$brewery->description}}">
                             </div>
                             <div class="mb-3">
                                 <select name="beers[]" multiple>
@@ -47,13 +47,13 @@
                             </div>
                             <div class="mb-3">
                                 <label  class="form-label">Sito Web </label>
-                                <input type="text" class="form-control" name="site" value="{{old('site')}}">
+                                <input type="text" class="form-control" name="site" value="{{$brewery->site}}">
                             </div>
                             <div class="mb-3">
                                 <label  class="form-label">Immagine </label>
                                 <input type="file" class="form-control" name="img">
                             </div>
-                            <button type="submit" class="btn btn-primary">Register</button>
+                            <button type="submit" class="btn btn-primary">Edit</button>
                         </form>
                     </div>
                     </div>
