@@ -11,7 +11,7 @@
                     <img src="{{Storage::url($brewery->img)}}" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">{{$brewery->name}}</h5>
-                        <h5 class="card-title">Proprietario: {{$brewery->owner}}</h5>
+                        <h5 class="card-title">Proprietario: {{$brewery->user->name}}</h5>
                         <p class="card-title">Sito: {{$brewery->site}}</p>
                         <p class="card-title">Indirizzo: {{$brewery->address}}</p>
                         <p class="card-text">{{$brewery->description}}</p>
@@ -30,7 +30,10 @@
                                 <button type="submit" class="btn btn-danger">
                                     Delete
                                 </button>
-                                </form>
+                            </form>
+                            <a class="btn btn-warning" href="{{route('breweryEdit', compact('brewery'))}}">
+                                  Edit
+                            </a>
                                 @endif
                                 @endauth
                     </div>

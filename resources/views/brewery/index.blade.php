@@ -17,6 +17,7 @@
                         <p class="card-title">Sito: {{$brewery->site}}</p>
                         <p class="card-title">Indirizzo: {{$brewery->address}}</p>
                         <p class="card-text">{{$brewery->description}}</p>
+                        
                         <a href="{{route('breweryShow', compact('brewery'))}}" class="btn btn-primary">Dettaglio</a>
                     </div>
                     </div>

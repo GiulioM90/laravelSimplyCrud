@@ -77,7 +77,8 @@ class BreweryController extends Controller
      */
     public function edit(Brewery $brewery)
     {
-        //
+        $beers = Beer::all();
+        return view('brewery.edit', compact('brewery','beers'));
     }
 
     /**
@@ -89,7 +90,15 @@ class BreweryController extends Controller
      */
     public function update(Request $request, Brewery $brewery)
     {
-        //
+        $brewery->update([
+            'name'=> $request->name,
+            'address' => $request->address,
+            'img' => $request->file('img')->store("public/img"),
+            'description' => $request->description
+        ]);
+        //inserisco solo le birre che non ho 
+        $brewery->beers()->sync($request->beers);
+        return redirect(route('breweryIndex'))->with('message','modify succesfull');
     }
 
     /**

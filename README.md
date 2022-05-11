@@ -535,7 +535,109 @@ Route::delete('/brewery/destroy/{brewery}',[BreweryController::class,'destroy'])
 <p> sostituirlo con    'user_id' =>Auth::user()->id,</p>
 <p>Nel modello Brewery sostituire il fillable owner con 'user_id'</p>
 
-<p></p>
+<p> PER l'edit creare rotte </p>
+<p>
+Route::get("brewery/edit/{brewery}", [BreweryController::class, "edit"])->name("BreweryEdit");
+Route::put("brewery/update/{brewery}", [BreweryController::class, "update"])->name("BreweryUpdate");
+</p>
+<p>nella funzione edit </p>
+<p>
+    public function edit(Brewery $brewery)
+    {
+        $beers = Beer::all();
+        return view('brewery.edit', compact('brewery','beers'));
+    }
+
+</p>
+<p>
+creare la vista blade e il form 
+</p>
+<p> 
+<x-layout>
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-6 offset-md-3">
+                @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+            <h1>
+                Edit your Brewery 
+            </h1>
+            <div class="row">
+                 <div class="col-12">
+                 <div class="card" style="width: 18rem;">
+                    <form method="POST" action="{{route('breweryUpdate' , compact('brewery'))}}" enctype="multipart/form-data">
+                        @csrf
+                        @method('put')
+                        <div class="mb-3">
+                                <img src="{{Storage::url($brewery->img)}}" class="card-img-top" alt="...">
+                                <div class="card-body">
+                            </div>
+                            <div class="mb-3">
+                                <label  class="form-label">Nome del tuo locale </label>
+                                <input type="text" class="form-control" name="name" value="{{old('name')}}">
+                            </div>
+                            <div class="mb-3">
+                                <label  class="form-label">Indirizzo </label>
+                                <input type="text" class="form-control" name="address" value="{{old('address')}}"> 
+                            </div>
+                            <div class="mb-3">
+                                <label  class="form-label">Descrizione </label>
+                                <input type="text" class="form-control" name="description" value="{{old('description')}}">
+                            </div>
+                            <div class="mb-3">
+                                <select name="beers[]" multiple>
+                                    @foreach ($beers as $beer)
+                                        <option value="{{$beer->id}}">
+                                            {{$beer->name}}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label  class="form-label">Sito Web </label>
+                                <input type="text" class="form-control" name="site" value="{{old('site')}}">
+                            </div>
+                            <div class="mb-3">
+                                <label  class="form-label">Immagine </label>
+                                <input type="file" class="form-control" name="img">
+                            </div>
+
+
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </form>
+                    </div>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+</x-layout>
+
+</p>
+<p> nella funzione update </p>
+<p>
+    public function update(Request $request, Brewery $brewery)
+    {
+        $brewery->update([
+            'name'=> $request->name,
+            'address' => $request->address,
+             'img' => $request->file('img')->store("public/img"),
+            'description' => $request->description
+        ]);
+
+        //inserisco solo le birre che non ho 
+        $brewery->beers()->sync($request->beers);
+        return redirect(route('breweryIndex'))->with('message','modify succesfull');
+    }
+</p>
 <p></p>
 <p></p>
 <p></p>

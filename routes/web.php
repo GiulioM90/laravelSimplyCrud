@@ -23,3 +23,5 @@ Route::get("/brewery/create" , [BreweryController::class, "create"])->name("brew
 Route::post("/brewery/store", [BreweryController::class, "store"])->name("breweryStore");
 Route::get("/brewery/show/{brewery}", [BreweryController::class,"show"])->name("breweryShow");
 Route::delete("/brewery/destroy/{brewery}",[BreweryController::class,"destroy"])->name("breweryDestroy");
+Route::get("brewery/edit/{brewery}", [BreweryController::class, "edit"])->name("breweryEdit");
+Route::put("brewery/update/{brewery}", [BreweryController::class, "update"])->name("breweryUpdate");
